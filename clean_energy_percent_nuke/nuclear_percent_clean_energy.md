@@ -1,26 +1,38 @@
----
-title: "Nuclear generated what percent of clean energy in 2017?"
-author: "Katie Mummah"
-date: "12/2/2018"
-output: rmarkdown::github_document
----
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+Nuclear generated what percent of clean energy in 2017?
+================
+Katie Mummah
+12/2/2018
 
 # Data from U.S. EIA
-https://www.eia.gov/electricity/data.php
 
-Choose "Generation and Thermal Output", then under "Detailed preliminary EIA-923 monthly and annual survey data (back to 1990)", and "State-level generation and fuel consumption data", download "Annual (back to 1990)"
+<https://www.eia.gov/electricity/data.php>
+
+Choose “Generation and Thermal Output”, then under “Detailed preliminary
+EIA-923 monthly and annual survey data (back to 1990)”, and “State-level
+generation and fuel consumption data”, download “Annual (back to 1990)”
 
 ### libraries
-```{r}
+
+``` r
 library(dplyr)
+```
+
+    ## 
+    ## Attaching package: 'dplyr'
+
+    ## The following objects are masked from 'package:stats':
+    ## 
+    ##     filter, lag
+
+    ## The following objects are masked from 'package:base':
+    ## 
+    ##     intersect, setdiff, setequal, union
+
+``` r
 library(readxl)
 ```
 
-```{r}
+``` r
 annual_state_electricity <- read_excel("electricity_data.xls", skip = 2)
 #make as tibble, clean for readability
 annual_state_electricity <- as.tbl(annual_state_electricity)
@@ -36,6 +48,8 @@ nuclear_all_states_2017 <- total_industry_2017 %>% filter(Source == "Nuclear") %
 nuclear_percent_of_clean_energy <- (nuclear_all_states_2017$total_nuclear / clean_all_states_2017$total_clean) * 100
 ```
 
-```{r}
+``` r
 paste0("In 2017, nuclear power generated ", round(nuclear_percent_of_clean_energy,2), "% of the U.S. clean energy")
 ```
+
+    ## [1] "In 2017, nuclear power generated 53.97% of the U.S. clean energy"
