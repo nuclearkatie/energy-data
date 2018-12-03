@@ -1,7 +1,13 @@
 ---
 title: "Nuclear generated what percent of clean energy in 2017?"
-output: html_notebook
+author: "Katie Mummah"
+date: "12/2/2018"
+output: rmarkdown::github_document
 ---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
 
 # Data from U.S. EIA
 https://www.eia.gov/electricity/data.php
