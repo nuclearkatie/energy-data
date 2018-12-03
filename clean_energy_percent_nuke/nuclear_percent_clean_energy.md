@@ -32,21 +32,44 @@ library(dplyr)
 library(readxl)
 ```
 
+# Calculation
+
+## Read data
+
 ``` r
 annual_state_electricity <- read_excel("electricity_data.xls", skip = 2)
 #make as tibble, clean for readability
+```
+
+### Clean data
+
+``` r
 annual_state_electricity <- as.tbl(annual_state_electricity)
 annual_state_electricity <- annual_state_electricity %>% mutate(Source = recode(Source, 'Wood and Wood Derived Fuels'='Wood Derived Fuels')) %>% mutate(Source = recode(Source, 'Hydroelectric Conventional'='Hydroelectric')) %>% mutate(Source = recode(Source, 'Solar Thermal and Photovoltaic'='Solar Thermal and PV')) 
-# Only using total electric power industry, in 2017
+```
+
+### Only using total electric power industry, in 2017
+
+``` r
 total_industry_2017 <- annual_state_electricity %>% filter(Type == "Total Electric Power Industry") %>% filter(Year == 2017) %>%
   filter(Source != "Total")
-#clean energy summed over all states in 2017
+```
+
+### Calculate clean energy generation summed over all states in 2017
+
+``` r
 clean_all_states_2017 <- total_industry_2017 %>% filter(Source %in% c("Geothermal", "Hydroelectric", "Nuclear", "Solar Thermal and PV", "Other Biomass", "Wind", "Wood Derived Fuels" )) %>% summarise(total_clean = sum(Gen))
-#nuclear energy summed over all states in 2017
+```
+
+### Calculate nuclear energy summed over all states in 2017
+
+``` r
 nuclear_all_states_2017 <- total_industry_2017 %>% filter(Source == "Nuclear") %>% summarise(total_nuclear = sum(Gen))
 #percent
 nuclear_percent_of_clean_energy <- (nuclear_all_states_2017$total_nuclear / clean_all_states_2017$total_clean) * 100
 ```
+
+## Answer: Nuclear generated what percent of clean energy in 2017?
 
 ``` r
 paste0("In 2017, nuclear power generated ", round(nuclear_percent_of_clean_energy,2), "% of the U.S. clean energy")
